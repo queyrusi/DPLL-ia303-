@@ -1,10 +1,10 @@
 #!/usr/bin/python
 #  -*- coding: utf-8 -*-
 
-"""dpll_main.py
+"""simple_dpll.py
 Functions and main for a dictionary-based-implementation of DPLL.
 
-Check https://github.com/queyrusi/DPLL-ia303- for updates!
+Check github.com/queyrusi/DPLL-ia303- for updates!
 """
 
 
