@@ -29,3 +29,5 @@ def get_subformulas(formula, subformulas_list):
 
 
 subformulas = get_subformulas(toto, [])
+for subf in subformulas:
+    print(subf)
