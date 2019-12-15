@@ -1,6 +1,5 @@
-import boolean.boolean
-algebra = boolean.BooleanAlgebra()
-toto = algebra.parse("!(a & b) | (c & (d & e)) | (!f & !(g & !h))")
+from boolean.boolean import *
+algebra = BooleanAlgebra()
 
 
 def get_subformulas(formula, subformulas_list):
@@ -15,92 +14,130 @@ def get_subformulas(formula, subformulas_list):
 
     Examples:
         >>>toto = algebra.parse( "~(a&b)|!c")
-        >>>subsformulas = get_subformulas(toto,[])
-        >>>for subf in subformulas: print(subf)
-        (~(a&b))|(c&(d&e))|(~f&(~(g&~h)))
+        >>>subformulas_list = get_subformulas(toto,[])
+        >>>for subf in subformulas_list: print(subf)
+        (~(a&b))|~c
         ~(a&b)
         a&b
-        c&(d&e)
-        d&e
-        ~f&(~(g&~h))
-        ~f
-        ~(g&~h)
-        g&~h
-        ~h
+        ~c
     """
     subformulas_list.append(formula)
     for arg in formula.args:
         if isinstance(arg, tuple) or isinstance(arg, list) \
-                or isinstance(arg, boolean.AND) \
-                or isinstance(arg, boolean.OR) \
-                or isinstance(arg, boolean.NOT):
+                or isinstance(arg, AND) \
+                or isinstance(arg, OR) \
+                or isinstance(arg, NOT):
             get_subformulas(arg, subformulas_list)
-        elif not isinstance(arg, boolean.Symbol):
+        elif not isinstance(arg, Symbol):
             subformulas_list.append(arg)
     return subformulas_list
 
 
-subformulas = get_subformulas(toto, [])
-for subf in subformulas:
-    print(subf)
-
-
-def get_symbols(formula, symbols_list):
-    """gets symbols from input formula
+def tseytin(formula):
+    """returns a Tseytin transformation of input formul
 
     Args:
         formula (boolean.boolean.*): * is OR, AND or NOT
-        symbols_list (list): empty list
 
     Returns:
-        symbols_list (list): list of all symbols in formula
+        clause.simplify() (boolean.boolean.AND):
+            CNF form of input formula with newly introduced formula (due to
+            Tseytin transformation) and simplified so that double NOT are
+            dismissed
 
-    Examples:
-        >>>toto = algebra.parse("!(a & b) | (c & (d & e))")
-        >>>get_symbols(toto, [])
-        [Symbol('a'), Symbol('b'), Symbol('c'), Symbol('d'), Symbol('e')]
     """
-    print(symbols_list)
-    for arg in formula.args:
-        print(str(arg))
-        if isinstance(arg, tuple) or isinstance(arg, list)\
-                or isinstance(arg, boolean.AND) \
-                or isinstance(arg, boolean.OR) \
-                or isinstance(arg, boolean.NOT):
-            get_symbols(arg, symbols_list)
-        elif isinstance(arg, boolean.Symbol) and arg not in symbols_list:
-            symbols_list.append(arg)
-    return symbols_list
+    clause = None
+    subformulas_list = get_subformulas(formula, [])
+    # on commence par i = 0 :
+    subformulas_list.reverse()
+
+    # on crée m variables fraîches x_1, x_2, ... , x_m :
+    x = [Symbol("x" + str(i)) for i in range(1, len(subformulas_list) + 1)]
+    i = 0
+
+    while i < len(subformulas_list):
+        subformula = subformulas_list[i]
+        if subformula.operator == '~':  # we encounter NOT
+            p = subformula
+            equivalence_formula = AND(OR(NOT(p), NOT(x[i])), OR(p, x[i]))
+            clause = equivalence_formula if clause is None else \
+                AND(clause, equivalence_formula)
+
+        elif subformula.operator == '&':  # we encounter AND
+            p = subformula.args[0]
+            q = subformula.args[1]
+            equivalence_formula = AND(
+                OR(NOT(p), NOT(q), x[i]),
+                OR(p, NOT(x[i])),
+                OR(q, NOT(x[i]))
+            )
+            clause = equivalence_formula if clause is None else \
+                AND(clause, equivalence_formula)
+
+        elif subformula.operator == '|':  # we encounter OR
+            p = subformula.args[0]
+            q = subformula.args[1]
+            equivalence_formula = AND(
+                OR(p, q, x[i]),
+                OR(NOT(p), x[i]),
+                OR(NOT(q), x[i])
+            )
+            clause = equivalence_formula if clause is None else \
+                AND(clause, equivalence_formula)
+        i += 1
+        subformulas_list = propagate(subformulas_list, subformula, x[i-1], i)
+    return clause.simplify()
 
 
-symbols = get_symbols(toto, [])
-subformula_symbols = []
-clauses = []
-
-
-# TODO
-def tseytin(formula, subformulas):
-    """
+def propagate(subformulas_list, phi_i, fresh_variable, i):
+    """replaces all occurrences of expression phi_i in input list starting at
+    element number i included
 
     Args:
-        formula ():
-        subformulas ():
+        subformulas_list (list):
+        phi_i (boolean.boolean.*): * is OR, AND or NOT
+            minimal expression to be replaced by a new variable. It can be of
+            form φ = ¬p, φ = p ∨ q or φ = p ∧ q
+        fresh_variable (boolean.boolean.Symbol):
+            newly introduced variable replacing phi_i
+        i (int):
 
     Returns:
+        propagated (list):
 
+    Examples:
+        >>>toto = algebra.parse( "~(a&b|!c)|!c")
+        >>>subformulas_list = get_subformulas(toto,[])
+        >>>subformulas_list.reverse()
+        >>>for subf in subformulas_list: print(subf)
+        ~c
+        ~c
+        a&b
+        (a&b)|~c
+        ~((a&b)|~c)
+        (~((a&b)|~c))|~c
+        >>>propagated = propagate(subformulas_list, subformulas_list[0],
+        ...Symbol('x1'), 1)
+        >>>for subf in propagated: print(str(subf))
+        ~c
+        x1
+        a&b
+        (a&b)|x1
+        ~((a&b)|x1)
+        (~((a&b)|x1))|x1
     """
-    new_symbol_number = 1
-    clause = None
-    i = 0
-    for subformula in get_subformulas(formula, []):
-        subformula_symbols.append(
-            boolean.boolean.Symbol(str(new_symbol_number))
-        )
-    while i < len(subformulas):
-        x_i = subformula_symbols[i]
-        subf_i = subformulas[i].simplify()  # simplify not compulsory
-        # left =
-        clause = (boolean.AND((boolean.NOT(x_i), subf_i),
-                               boolean.NOT(subf_i), x_i))
+    propagated = subformulas_list[:i]
+    for f in subformulas_list[i:]:
+        if str(phi_i) in str(f):
+            propagated.append(
+                algebra.parse(str(f).replace(str(phi_i), str(fresh_variable)))
+            )
+        else:
+            propagated.append(f)
+    return propagated
 
-    return
+
+toto = algebra.parse("!(a & b) | (c & (d & e)) | (!f & !(g & !h))")
+# minimal_example = algebra.parse("!(p|q|s|t) & !r")
+tsey_toto = tseytin(toto)
+print(tsey_toto)
