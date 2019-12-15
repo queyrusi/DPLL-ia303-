@@ -8,7 +8,6 @@ def Tseitin_recurrent(formula, counter, var_base):
     :param formula: <class 'boolean.boolean'> 
     :param var_base: A string used to create new variable without being conflict with the existing variables.
     """
-    # global counter, var_base
     if formula.isliteral:
         return (formula, TRUE)
     else:
