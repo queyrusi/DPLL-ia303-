@@ -34,7 +34,7 @@ def get_subformulas(formula, subformulas_list):
 
 
 def tseytin(formula):
-    """returns a Tseytin transformation of input formul
+    """returns a Tseytin transformation of input formula
 
     Args:
         formula (boolean.boolean.*): * is OR, AND or NOT
@@ -45,6 +45,13 @@ def tseytin(formula):
             Tseytin transformation) and simplified so that double NOT are
             dismissed
 
+    Examples:
+        >>>toto = algebra.parse("!(a & b) | (c & (d & e)) | (!f & !(g & !h))")
+        >>>tsey_toto = tseytin(toto)
+        >>>print(tsey_toto)
+        x10&(a|~x8)&(~a|~b|x8)&(b|~x8)&(c|~x7)&(~c|~x6|x7)&(d|~x6)&(~d|~e|x6)&
+        (e|~x6)&(f|~x4)&(~f|x4)&(g|~x2)&(~g|~x1|x2)&(h|~x1)&(~h|x1)&(x1|~x2)&(x2
+        |~x3)&(~x2|x3)&(x3|~x5)&(~x3|~x4|x5)&(x4|~x5)&(x6|~x7)&(x8|~x9)&(~x8|x9)
     """
     clause = None
     subformulas_list = get_subformulas(formula, [])
