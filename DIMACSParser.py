@@ -1,4 +1,13 @@
 def read_file_to_list(filename):
+    """Read a dimacs file to a list
+    Args:
+        file: str
+            file name
+    Returns
+    -------
+        clauses: list
+            list of clause
+    """
     with open(filename,"r") as dimacs:
         lines = dimacs.readlines()
         lines = [l.replace('\n', '').split() for l in lines]
@@ -15,6 +24,16 @@ def read_file_to_list(filename):
         return clauses
 
 def DIMACSParser(lines):
+    """extrait clauses and variables from dimacs format
+    Args:
+        lines: list
+            dimacs content in a list
+
+    Returns
+    -------
+        F: list
+            clauses and variables in a list
+    """
     F_str = [item[0:-1] for item in lines if (('c' not in item) and ('p' not in item))]
     F = []
     clause = []
