@@ -1,7 +1,3 @@
-import sys
-
-filename = sys.argv[1]
-
 def read_file_to_list(filename):
     with open(filename,"r") as dimacs:
         lines = dimacs.readlines()
@@ -30,6 +26,7 @@ def DIMACSParser(lines):
     return F
 
 if __name__ == "__main__":
+    filename = 'cnf_files/simple.cnf'
     lines = read_file_to_list(filename)
     f = DIMACSParser(lines)
     print(f)
