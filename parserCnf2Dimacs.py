@@ -1,10 +1,10 @@
 import boolean
-from DIMACSParser import DIMACSParser
+from dimacs_parser import dimacs_parser
 from boolean.boolean import *
 import argparse
 import sys
 
-def ParserCNF2Dimacs(cnf_str):
+def parserCnf2Dimacs(cnf_str):
     """Parse cnf in string to DIMACS format
     Args:
         cnf_str : string
@@ -54,8 +54,8 @@ if __name__ == "__main__":
 
     formule_in_boolean = str_to_formule(formule_in_string)    
     cnf_in_boolean = algebra.cnf(formule_in_boolean)
-    dimacs = ParserCNF2Dimacs(cnf_in_boolean.__str__())  
-    aa = DIMACSParser(dimacs)
+    dimacs = parserCnf2Dimacs(cnf_in_boolean.__str__())  
+    aa = dimacs_parser(dimacs)
     print(aa)
 
 

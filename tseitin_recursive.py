@@ -37,7 +37,7 @@ def Tseitin_recurrent(formula, counter, var_base):
             p2, c2 = Tseitin_recurrent(f2, counter, var_base)            
             return (p, (AND(OR(p, NOT(p1), NOT(p2)), OR(NOT(p), p1), OR(NOT(p), p2), c1, c2).simplify()))
 
-def Tseitin_recursive(formula):
+def tseitin_recursive(formula):
     """wrap the output of Tseitin_recurrent
     Args:
         formule: <class 'boolean.boolean'> 
@@ -55,5 +55,5 @@ if __name__ == "__main__":
     parser.add_argument('--logic', help='logic formule in string', default='!(p|q|s|t)&!r', type=str)
     args = parser.parse_args()
     formule_in_boolean = algebra.parse(args.logic)
-    cnf_formula = Tseitin_recursive(formule_in_boolean)
+    cnf_formula = tseitin_recursive(formule_in_boolean)
     print(cnf_formula)

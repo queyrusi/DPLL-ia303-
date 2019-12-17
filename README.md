@@ -17,25 +17,35 @@ Zhi Zhou, <zhi.zhou@ensta-paris.fr>
 
 ### Usage 
 
-Transform a string of logic formule into cnf using Tseitin tranformation:
+1. Transform a string of logic formule into cnf using Tseitin tranformation:
 ```
-python Tseitin_recursive.py --logic '!(p|q|s|t)&z'
+python tseitin_recursive.py --logic '!(p|q|s|t)&z'
 ```
 result will be like `~p&~q&~s&s0&~s2&~s3&~s4&~t&z`
 
-Parse cnf in string to a list of DIMACS format
+2. Parse cnf in string to a list of DIMACS format
 ```
-python ParserCNF2Dimacs.py
+python parserCnf2Dimacs.py
 ```
 then enter your cnf in the terminal, for example, `~p&~q&~s&s0&~s2&~s3&~s4&~t&z`. It will output the result like `[[-7], [-1], [-4], [2], [-8], [-6], [-5], [-3], [9]]`
 
-find model using dpll
+3. Find model using dpll
 ```
 python simple_dpll.py
 ```
 then enter your dimacs list, like `[[-7], [-1], [-4], [2], [-8], [-6], [-5], [-3], [9]]`. It will output the result, like `[-5, -2, -6, 4, -9, -3, -7, -8, 1]`
 
-Or you can run all these command in a pipeline:
+4. Or you can run all these commands in a pipeline:
 ```
-python Tseitin_recursive.py --logic '!(p|q|s|t)&z' | python ParserCNF2Dimacs.py | python simple_dpll.py
+python tseitin_recursive.py --logic '!(p|q|s|t)&z' | python parserCnf2Dimacs.py | python simple_dpll.py
+```
+
+5. Read a DIMACS file and transform to a list
+```
+python dimacs_parser.py --file cnf_files/simple.cnf
+```
+
+6. Read a DIMACS file and use dpll to output the result
+```
+python dimacs_parser.py --file cnf_files/simple.cnf | python simple_dpll.py
 ```

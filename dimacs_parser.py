@@ -1,3 +1,5 @@
+import argparse
+
 def read_file_to_list(filename):
     """Read a dimacs file to a list
     Args:
@@ -23,7 +25,7 @@ def read_file_to_list(filename):
                 clauses.append(line)
         return clauses
 
-def DIMACSParser(lines):
+def dimacs_parser(lines):
     """extrait clauses and variables from dimacs format
     Args:
         lines: list
@@ -45,7 +47,9 @@ def DIMACSParser(lines):
     return F
 
 if __name__ == "__main__":
-    filename = 'cnf_files/simple.cnf'
-    lines = read_file_to_list(filename)
-    f = DIMACSParser(lines)
+    parser = argparse.ArgumentParser(description="Read a cnf file and transform to a list")
+    parser.add_argument('--file', help="cnf file path", default="cnf_files/simple.cnf", type=str)
+    args = parser.parse_args()
+    lines = read_file_to_list(args.file)
+    f = dimacs_parser(lines)
     print(f)
