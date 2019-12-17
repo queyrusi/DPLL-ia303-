@@ -144,7 +144,8 @@ def propagate(subformulas_list, phi_i, fresh_variable, i):
     return propagated
 
 
-toto = algebra.parse("!(a & b) | (c & (d & e)) | (!f & !(g & !h))")
+# toto = algebra.parse("!(a & b) | (c & (d & e)) | (!f & !(g & !h))")
+toto = algebra.parse("!(p|q) & !r")
 # minimal_example = algebra.parse("!(p|q|s|t) & !r")
 tsey_toto = tseytin(toto)
 print(tsey_toto)
