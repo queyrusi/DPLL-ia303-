@@ -1,4 +1,5 @@
 from boolean.boolean import *
+import argparse
 algebra = BooleanAlgebra()
 
 
@@ -33,8 +34,8 @@ def get_subformulas(formula, subformulas_list):
     return subformulas_list
 
 
-def tseytin(formula):
-    """returns a Tseytin transformation of input formula
+def tseitin_iterative(formula):
+    """iterative Tseitin transformation of input formula
 
     Args:
         formula (boolean.boolean.*): * is OR, AND or NOT
@@ -47,7 +48,7 @@ def tseytin(formula):
 
     Examples:
         >>>toto = algebra.parse("!(a & b) | (c & (d & e)) | (!f & !(g & !h))")
-        >>>tsey_toto = tseytin(toto)
+        >>>tsey_toto = tseitin_iterative(toto)
         >>>print(tsey_toto)
         x10&(a|~x8)&(~a|~b|x8)&(b|~x8)&(c|~x7)&(~c|~x6|x7)&(d|~x6)&(~d|~e|x6)&
         (e|~x6)&(f|~x4)&(~f|x4)&(g|~x2)&(~g|~x1|x2)&(h|~x1)&(~h|x1)&(x1|~x2)&(x2
@@ -145,7 +146,15 @@ def propagate(subformulas_list, phi_i, fresh_variable, i):
 
 
 # toto = algebra.parse("!(a & b) | (c & (d & e)) | (!f & !(g & !h))")
-toto = algebra.parse("!(p|q) & !r")
-# minimal_example = algebra.parse("!(p|q|s|t) & !r")
-tsey_toto = tseytin(toto)
-print(tsey_toto)
+# toto = algebra.parse("!(p|q) & !r")
+# tsey_toto = tseytin(toto)
+# print(tsey_toto)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Tseitin transformation')
+    parser.add_argument('--logic', help='logic formule in string',
+                        default='!(p|q|s|t)&!r', type=str)
+    args = parser.parse_args()
+    formule_in_boolean = algebra.parse(args.logic)
+    cnf_formula = tseitin_iterative(formule_in_boolean)
+    print(cnf_formula)

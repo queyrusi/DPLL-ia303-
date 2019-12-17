@@ -1,6 +1,6 @@
 import argparse
 
-def read_file_to_list(filename):
+def dimacs2dimacs_list(filename):
     """Read a dimacs file to a list
     Args:
         file: str
@@ -25,7 +25,7 @@ def read_file_to_list(filename):
                 clauses.append(line)
         return clauses
 
-def dimacs_parser(lines):
+def dimacs_list2formula(lines):
     """extrait clauses and variables from dimacs format
     Args:
         lines: list
@@ -50,6 +50,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Read a cnf file and transform to a list")
     parser.add_argument('--file', help="cnf file path", default="cnf_files/simple.cnf", type=str)
     args = parser.parse_args()
-    lines = read_file_to_list(args.file)
-    f = dimacs_parser(lines)
+    lines = dimacs2dimacs_list(args.file)
+    f = dimacs_list2formula(lines)
     print(f)

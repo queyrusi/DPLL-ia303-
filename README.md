@@ -15,7 +15,7 @@ Zhi Zhou, <zhi.zhou@ensta-paris.fr>
 + `tseytin_recursive.py` and `tseytin_iterative.py` implement Tseytin transform
 + `cnf_files` contains `.cnf` files in DIMACS format
 
-### Usage 
+## Usage 
 
 1. Transform a string of logic formule into cnf using Tseitin tranformation:
 ```

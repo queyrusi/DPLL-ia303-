@@ -1,5 +1,4 @@
 import boolean
-from dimacs_parser import dimacs_parser
 from boolean.boolean import *
 import argparse
 import sys
@@ -55,7 +54,3 @@ if __name__ == "__main__":
     formule_in_boolean = str_to_formule(formule_in_string)    
     cnf_in_boolean = algebra.cnf(formule_in_boolean)
     dimacs = parsercnf2dimacs(cnf_in_boolean.__str__())  
-    aa = dimacs_parser(dimacs)
-    print(aa)
-
-

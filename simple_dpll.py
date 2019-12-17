@@ -11,16 +11,16 @@ import sys
 import copy
 import ast
 
-debug = False  # tODO
+debug = False
 show_steps = False
 
 
 def dpll(formula, model):
-    """
+    """simple dpll drawn from course PPT
 
     Args:
-        formula ():
-        model ():
+        formula (list): input formula to be SAT solved.
+        model (list): model for input formula. Empty in the beginning
 
     Returns:
 
@@ -29,8 +29,7 @@ def dpll(formula, model):
     new_f1 = copy.deepcopy(formula)
     new_f2 = copy.deepcopy(formula)
     if len(new_f1) == 0:
-        if show_steps:
-            print("[+] SAT")
+        print("[+] SAT")
         # print(new_f1)
         print(model)
         return True
@@ -58,13 +57,15 @@ def dpll(formula, model):
 
 
 def unit_propagate(formula, model):
-    """reduce
+    """propagates model inside input formula
 
     Args:
-        formula ():
-        model ():
+        formula (list):
+        model (list):
 
     Returns:
+        formula (list):
+        model (list):
 
     """
     if [] in formula:  # has empty clause
@@ -103,26 +104,25 @@ def unit_propagate(formula, model):
         unit_propagate(formula, model)
     return formula, model
 
-def dpll_wrap(formule):
-    dpll(formule, [])
 
-def check_sat(formula, model):
-    """
+def dpll_wrap(formule):
+    """wrapper for dpll to initiate it more quickly
 
     Args:
-        formula ():
-        model ():
-
-    Returns:
+        formule (list): input formula to be SAT-solved
 
     """
-    unit_propagate(formula,model)
-    return False
+    dpll(formule, [])
+    return
 
-if __name__ == "__main__":
-    formule_in_list = [[-2], [-1], [-4], [-3], [-6], [-5]] # just an example
-    try:
-        formule_in_list = ast.literal_eval(sys.stdin.readline())
-    except Exception as e:
-        print('Error', e)   
-    dpll_wrap(formule_in_list)
+
+def check_sat(formula, model):
+    """check satisfiablity of formula given input model
+
+    Args:
+        formula (list):
+        model (list):
+
+    """
+    unit_propagate(formula, model)
+    return

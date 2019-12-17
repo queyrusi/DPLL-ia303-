@@ -1,5 +1,4 @@
-import boolean
-from dimacs_parser import dimacs_parser
+    import boolean
 from boolean.boolean import *
 from parsercnf2dimacs import *
 from tseitin_recursive  import tseitin_recursive
@@ -25,5 +24,3 @@ if __name__ == "__main__":
     # cnf_in_boolean = algebra.cnf(formule_in_boolean)
     dimacs = parsercnf2dimacs(cnf_in_boolean.__str__())  
     print(dimacs)
-    aa = dimacs_parser(dimacs)
-    print(aa)
