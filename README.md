@@ -1,7 +1,7 @@
-IA3030 : implémentation de DPLL
+IA303 : DPLL SAT solver and Tseytin Transform implementation
 ====
 
-### Auteurs
+### Authors
 Zhi Zhou, <zhi.zhou@ensta-paris.fr>
  Simon Queyrut,  <simon.queyrut@ensta-paris.fr>
  
@@ -9,17 +9,15 @@ Zhi Zhou, <zhi.zhou@ensta-paris.fr>
 
 [github]: http://github.com/queyrusi
 
-### Sujet
-Implémentation simple d'un solveur SAT DPLL et d'une transformation de Tseytin
 
-## Contenu du package
-+ `simple_dpll.py` avec l'algorithme DPLL et sa fonction de propagation en dessous
-+ `tseytin_1.py` et `tseytin_2.py` qui implémentent une transformation de Tseytin 
-+ `cnf_files` 
+## Content
++ `simple_dpll.py` with DPLL funciton and its `propagate` function below
++ `tseytin_recursive.py` and `tseytin_iterative.py` implement Tseytin transform
++ `cnf_files` contains `.cnf` files in DIMACS format
 
-### Usage
+### Usage 
 
-transform a string of logic formule into cnf using Tseitin tranformation:
+Transform a string of logic formule into cnf using Tseitin tranformation:
 ```
 python Tseitin_recursive.py --logic '!(p|q|s|t)&z'
 ```
