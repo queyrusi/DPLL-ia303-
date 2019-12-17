@@ -12,7 +12,7 @@ Zhi Zhou, <zhi.zhou@ensta-paris.fr>
 
 ## Content
 + `simple_dpll.py` with DPLL funciton and its `propagate` function below
-+ `tseytin_recursive.py` and `tseytin_iterative.py` implement Tseytin transform
++ `tseitin_recursive.py` and `tseitin_iterative.py` implement two *different methods* of Tseytin transform
 + `cnf_files` contains `.cnf` files in DIMACS format
 
 ## Usage 
@@ -41,7 +41,7 @@ result will be like `~p&~q&~s&s0&~s2&~s3&~s4&~t&z`. You can also use `tseitin_it
 
 2. If you want to solve, run all these commands in a pipeline:
 ```
-python tseitin_recursive.py --logic '!(p|q|s|t)&z' | python parsercnf2Dimacs.py | python simple_dpll.py
+python tseitin_recursive.py --logic '!(p|q|s|t)&z' | python parsercnf2dimacs.py | python simple_dpll.py
 ```
 It will give an output like 
 `[+] SAT` and `[-1, 9, -6, -5, -3, -8, -4, -7, 2]` which is the model for Tseitin transformation (hence higher number of variables).
