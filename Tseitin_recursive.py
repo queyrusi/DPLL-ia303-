@@ -1,4 +1,5 @@
 import boolean
+import argparse
 
 algebra = boolean.BooleanAlgebra()
 TRUE, FALSE, NOT, AND, OR, symbol = algebra.definition()
@@ -50,9 +51,9 @@ def Tseitin_recursive(formula):
     return AND(p, c).simplify()
 
 if __name__ == "__main__":
-    a = "!(p|q|s|t)&!r"
-
-    f = algebra.parse(a)
-
-    cnf_formula = Tseitin_recursive(f)
-    print('After Tseitin transformation: {}'.format(cnf_formula))          
+    parser = argparse.ArgumentParser(description='Tseitin transformation')
+    parser.add_argument('--logic', help='logic formule in string', default='!(p|q|s|t)&!r', type=str)
+    args = parser.parse_args()
+    formule_in_boolean = algebra.parse(args.logic)
+    cnf_formula = Tseitin_recursive(formule_in_boolean)
+    print(cnf_formula)

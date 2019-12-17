@@ -1,7 +1,7 @@
 import boolean
 from DIMACSParser import DIMACSParser
 from boolean.boolean import *
-from ParserFormuleToDimacs import *
+from ParserCNF2Dimacs import *
 from Tseitin_recursive  import Tseitin_recursive
 
 if __name__ == "__main__":

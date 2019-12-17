@@ -1,6 +1,8 @@
 import boolean
 from DIMACSParser import DIMACSParser
 from boolean.boolean import *
+import argparse
+import sys
 
 def ParserCNF2Dimacs(cnf_str):
     """Parse cnf in string to DIMACS format
@@ -45,10 +47,14 @@ if __name__ == "__main__":
     algebra = boolean.BooleanAlgebra()
     # change your formule string here
     formule_in_string = 'x | !y & (z | t) '
+    try:
+        formule_in_string = sys.stdin.readline()
+    except Exception as e:
+        print('Error', e)            
+
     formule_in_boolean = str_to_formule(formule_in_string)    
     cnf_in_boolean = algebra.cnf(formule_in_boolean)
     dimacs = ParserCNF2Dimacs(cnf_in_boolean.__str__())  
-    print(dimacs)
     aa = DIMACSParser(dimacs)
     print(aa)
 
