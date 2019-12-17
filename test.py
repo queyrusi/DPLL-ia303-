@@ -1,7 +1,7 @@
 import boolean
 from dimacs_parser import dimacs_parser
 from boolean.boolean import *
-from parserCnf2Dimacs import *
+from parsercnf2dimacs import *
 from tseitin_recursive  import tseitin_recursive
 
 if __name__ == "__main__":
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     formule_in_boolean = str_to_formule(formule_in_string)    
     cnf_in_boolean = tseitin_recursive(formule_in_boolean)
     # cnf_in_boolean = algebra.cnf(formule_in_boolean)
-    dimacs = parserCnf2Dimacs(cnf_in_boolean.__str__())  
+    dimacs = parsercnf2dimacs(cnf_in_boolean.__str__())  
     print(dimacs)
     aa = dimacs_parser(dimacs)
     print(aa)

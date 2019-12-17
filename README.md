@@ -25,7 +25,7 @@ result will be like `~p&~q&~s&s0&~s2&~s3&~s4&~t&z`
 
 2. Parse cnf in string to a list of DIMACS format
 ```
-python parserCnf2Dimacs.py
+python parsercnf2dimacs.py
 ```
 then enter your cnf in the terminal, for example, `~p&~q&~s&s0&~s2&~s3&~s4&~t&z`. It will output the result like `[[-7], [-1], [-4], [2], [-8], [-6], [-5], [-3], [9]]`
 
@@ -33,19 +33,21 @@ then enter your cnf in the terminal, for example, `~p&~q&~s&s0&~s2&~s3&~s4&~t&z`
 ```
 python simple_dpll.py
 ```
-then enter your dimacs list, like `[[-7], [-1], [-4], [2], [-8], [-6], [-5], [-3], [9]]`. It will output the result, like `[-5, -2, -6, 4, -9, -3, -7, -8, 1]`
+then enter your dimacs list, like `[[-7], [-1], [-4], [2], [-8], [-6], [-5], [-3], [9]]`. It will output the result, like `[-7, -1, -4, 2, -8, -6, -5, -3, 9]`
 
 4. Or you can run all these commands in a pipeline:
 ```
-python tseitin_recursive.py --logic '!(p|q|s|t)&z' | python parserCnf2Dimacs.py | python simple_dpll.py
+python tseitin_recursive.py --logic '!(p|q|s|t)&z' | python parsercnf2dimacs.py | python simple_dpll.py
 ```
 
 5. Read a DIMACS file and transform to a list
 ```
 python dimacs_parser.py --file cnf_files/simple.cnf
 ```
+It will give an output like `[[1, 2], [2, -3, 4], [-1, -2], [-1, 3, -4], [1]]`
 
 6. Read a DIMACS file and use dpll to output the result
 ```
 python dimacs_parser.py --file cnf_files/simple.cnf | python simple_dpll.py
 ```
+It will give an output like `[1, -2, -3, -4]`
