@@ -126,3 +126,12 @@ def check_sat(formula, model):
     """
     unit_propagate(formula, model)
     return
+
+
+if __name__ == "__main__":
+    formule_in_list = [[-2], [-1], [-4], [-3], [-6], [-5]]  # just an example
+    try:
+        formule_in_list = ast.literal_eval(sys.stdin.readline())
+    except Exception as e:
+        print('Error', e)
+    dpll_wrap(formule_in_list)

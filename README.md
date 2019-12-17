@@ -21,40 +21,28 @@ Zhi Zhou, <zhi.zhou@ensta-paris.fr>
 ```bash
 python sat_solve.py file.cnf
 ```
-but if you don't feel free to use examples on which we already tested or small solver:
+but if you don't, feel free to use examples on which we already tested or small solver (*careful*: some extremely large DIMACS can take several minutes to solve):
 ```bash
 python sat_solve.py ./cnf_files/SAT/simple.cnf
 ```
+**Note**: it wont return anything if UNSAT.
 
-1. Transform a string of logic formule into cnf using Tseitin tranformation:
+-------------
+
+
++ Or you could **use your own formula**:
+
+1. Try to ransform a string of logic formula into cnf using Tseitin tranformation:
 ```
 python tseitin_recursive.py --logic '!(p|q|s|t)&z'
 ```
-result will be like `~p&~q&~s&s0&~s2&~s3&~s4&~t&z`
+result will be like `~p&~q&~s&s0&~s2&~s3&~s4&~t&z`. You can also use `tseitin_iterative.py` if you feel like it.
 
-2. Parse cnf in string to a list of DIMACS format
-```
-python parserCnf2Dimacs.py
-```
-then enter your cnf in the terminal, for example, `~p&~q&~s&s0&~s2&~s3&~s4&~t&z`. It will output the result like `[[-7], [-1], [-4], [2], [-8], [-6], [-5], [-3], [9]]`
 
-3. Find model using dpll
-```
-python simple_dpll.py
-```
-then enter your dimacs list, like `[[-7], [-1], [-4], [2], [-8], [-6], [-5], [-3], [9]]`. It will output the result, like `[-5, -2, -6, 4, -9, -3, -7, -8, 1]`
-
-4. Or you can run all these commands in a pipeline:
+2. If you want to solve, run all these commands in a pipeline:
 ```
 python tseitin_recursive.py --logic '!(p|q|s|t)&z' | python parserCnf2Dimacs.py | python simple_dpll.py
 ```
+It will give an output like 
+`[+] SAT` and `[-1, 9, -6, -5, -3, -8, -4, -7, 2]` which is the model for Tseitin transformation (hence higher number of variables).
 
-5. Read a DIMACS file and transform to a list
-```
-python dimacs_parser.py --file cnf_files/simple.cnf
-```
-
-6. Read a DIMACS file and use dpll to output the result
-```
-python dimacs_parser.py --file cnf_files/simple.cnf | python simple_dpll.py
-```
