@@ -1,4 +1,4 @@
-    import boolean
+import boolean
 from boolean.boolean import *
 from parsercnf2dimacs import *
 from tseitin_recursive  import tseitin_recursive
